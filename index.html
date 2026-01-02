@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Downloader Pro | Unduh Video TikTok Tanpa Watermark</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF0050;
+            --primary-dark: #D10042;
+            --secondary: #00F2EA;
+            --dark: #121212;
+            --darker: #0A0A0A;
+            --light: #F5F5F5;
+            --gray: #2D2D2D;
+            --gray-light: #3A3A3A;
+            --success: #00C851;
+            --warning: #FFBB33;
+            --danger: #FF4444;
+            --radius: 12px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--light);
+            border: 1px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 80px;
+            background: linear-gradient(135deg, var(--darker) 0%, #1a1a2e 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 0, 80, 0.1) 0%, transparent 50%);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 60px 0;
+        }
+
+        .download-card {
+            background-color: var(--dark);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .download-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            border: 2px solid var(--gray);
+            background-color: var(--darker);
+            color: var(--light);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background-color: var(--dark);
+            border-radius: var(--radius);
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .feature-card p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            padding: 60px 0;
+            background-color: var(--darker);
+        }
+
+        .preview-card {
+            background-color: var(--dark);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .video-info {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .thumbnail {
+            width: 200px;
+            height: 350px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .video-details {
+            flex: 1;
+        }
+
+        .video-details h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .meta-data {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .download-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .download-option {
+            background-color: var(--gray);
+            border-radius: var(--radius);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .download-option:hover {
+            background-color: var(--gray-light);
+        }
+
+        .option-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .option-info p {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* History Section */
+        .history-section {
+            padding: 60px 0;
+        }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .history-item {
+            background-color: var(--dark);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            background-color: var(--gray);
+        }
+
+        .history-thumb {
+            width: 80px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .history-details {
+            flex: 1;
+        }
+
+        .history-details h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-details p {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            padding: 50px 0 20px;
+            border-top: 1px solid var(--gray);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray);
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 38px;
+            }
+            
+            .video-info {
+                flex-direction: column;
+            }
+            
+            .thumbnail {
+                width: 100%;
+                max-width: 300px;
+                height: auto;
+                aspect-ratio: 9/16;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark);
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 130px 0 50px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .download-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .download-card {
+                padding: 25px 20px;
+            }
+            
+            .feature-card {
+                padding: 20px 15px;
+            }
+            
+            .history-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <i class="fab fa-tiktok"></i>
+                    TikTok<span>Downloader</span>
+                </a>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#download"><i class="fas fa-download"></i> Download</a></li>
+                        <li><a href="#history"><i class="fas fa-history"></i> Riwayat</a></li>
+                        <li><a href="#features"><i class="fas fa-star"></i> Fitur</a></li>
+                        <li><a href="#help"><i class="fas fa-question-circle"></i> Bantuan</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="user-actions">
+                    <button class="btn btn-secondary"><i class="fas fa-user"></i> Masuk</button>
+                    <button class="btn btn-primary"><i class="fas fa-crown"></i> Premium</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Unduh Video TikTok Tanpa Watermark</h1>
+            <p>Download video TikTok dengan kualitas HD, tanpa watermark, dan gratis! Cukup salin link video TikTok dan tempel di bawah ini.</p>
+            
+            <div class="download-card">
+                <div class="download-form">
+                    <div class="input-group">
+                        <input type="text" class="url-input" id="videoUrl" placeholder="Tempel link video TikTok di sini... Contoh: https://www.tiktok.com/@username/video/123456789">
+                        <button class="btn btn-primary" id="downloadBtn">
+                            <i class="fas fa-search"></i> Analisis Video
+                        </button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn btn-secondary" id="pasteBtn">
+                            <i class="fas fa-paste"></i> Tempel Link
+                        </button>
+                        <button class="btn btn-secondary" id="clearBtn">
+                            <i class="fas fa-times"></i> Hapus
+                        </button>
+                        <button class="btn btn-secondary" id="exampleBtn">
+                            <i class="fas fa-eye"></i> Contoh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="download-section" id="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 36px;">Fitur Unggulan</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-water"></i>
+                    <h3>Tanpa Watermark</h3>
+                    <p>Download video TikTok tanpa logo watermark, hasil bersih dan jernih.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-hd"></i>
+                    <h3>Kualitas HD</h3>
+                    <p>Dukung download video dengan kualitas hingga 1080p HD tanpa kompresi.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-music"></i>
+                    <h3>Ekstrak Audio</h3>
+                    <p>Unduh hanya audio dari video TikTok dalam format MP3 berkualitas tinggi.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Cepat & Mudah</h3>
+                    <p>Proses download cepat tanpa registrasi, cukup tempel link dan unduh.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Kompatibel</h3>
+                    <p>Bisa digunakan di semua perangkat: PC, laptop, tablet, dan smartphone.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-infinity"></i>
+                    <h3>Tanpa Batas</h3>
+                    <p>Download video sebanyak yang Anda mau tanpa batasan jumlah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preview Section -->
+    <section class="preview-section" id="download">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 36px;">Preview & Download</h2>
+            
+            <div class="preview-card" id="previewCard">
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1611605698335-8b1569810432?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGlrdG9rfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=80" alt="Video Thumbnail" class="thumbnail">
+                    
+                    <div class="video-details">
+                        <h3>Contoh Video TikTok dengan Musik Trending</h3>
+                        <div class="meta-data">
+                            <div class="meta-item">
+                                <i class="fas fa-user"></i>
+                                <span>@tiktokuser</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-heart"></i>
+                                <span>245.2K suka</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-comment"></i>
+                                <span>3.4K komentar</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-share"></i>
+                                <span>12.1K dibagikan</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>15 detik</span>
+                            </div>
+                        </div>
+                        
+                        <p>Video contoh ini menunjukkan bagaimana hasil download dari TikTok Downloader. Video dapat diunduh dalam berbagai kualitas sesuai kebutuhan Anda.</p>
+                    </div>
+                </div>
+                
+                <h3 style="margin-bottom: 20px;">Pilihan Download</h3>
+                <div class="download-options">
+                    <div class="download-option">
+                        <div c
